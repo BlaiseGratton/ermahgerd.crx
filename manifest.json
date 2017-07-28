@@ -1,0 +1,19 @@
+{
+  "name": "ERMAHGERD!",
+  "version": "0.1",
+  "manifest_version": 2,
+  "description": "Transforms page content into ERMAHGERD!-ed text",
+  "icons": {
+    "128": "ermahgerd_128.png"
+  },
+  "permissions": [
+    "activeTab",
+    "http://localhost.com:5000"
+  ],
+  "background": {
+    "scripts": [ "browserAction.js" ]
+  },
+  "browser_action": {
+    "default_title": "ERMAHGERD!"
+  }
+}
