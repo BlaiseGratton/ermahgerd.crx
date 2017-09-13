@@ -8,10 +8,15 @@
   },
   "permissions": [
     "activeTab",
-    "http://localhost.com:5000"
+    "*://*/*",
+    "http://127.0.0.1:5000/"
   ],
   "background": {
-    "scripts": [ "browserAction.js" ]
+    "scripts": [
+      "jquery-3.2.1.slim.min.js",
+      "handleClick.js"
+    ],
+    "persistent": true
   },
   "browser_action": {
     "default_title": "ERMAHGERD!"

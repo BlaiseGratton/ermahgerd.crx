@@ -1,32 +1,42 @@
-const createRegisterer = () => {
+function* registerNode() {
   let counter = 1
 
-  const registerNode = elem => ({
-    id: counter++,
-    text: elem.textContent,
-    elem
-  })
-
-  return registerNode
+  while (true) {
+    let elem = yield 
+    if (elem && elem.text.trim()) {
+      yield {
+        id: counter++,
+        text: elem.text,
+        elem
+      }
+    }
+  }
 }
 
-const registerNode = createRegisterer()
+const gen = registerNode()
+
+
+const register = (() => {
+  let counter = 1
+
+  return (elem) => ({
+    id: counter++,
+    text: elem.text,
+    elem
+  })
+})()
 
 const searchChildNodesForText = (elem, textNodes=[]) => {
   for (let node of elem.children) {
-    if (node.textContent
-        && node.tagName !== 'SCRIPT'
-        && node.tagName !== 'STYLE') {
-      textNodes.push(registerNode(node))
+    if (node.text && node.tagName !== 'SCRIPT' && node.tagName !== 'STYLE') {
+      debugger
+      textNodes.push(register(node))
     }
     searchChildNodesForText(node, textNodes)
   }
 
   return textNodes
 }
-
-
-const textNodes = searchChildNodesForText(document.querySelector('body'))
 
 const extractForProcessing = (textNodes) => {
   return textNodes.map(n => ({ text: n.text, id: n.id }))
@@ -37,9 +47,13 @@ const handleResponse = (response) => {
 
   terxtNerdz.forEach((nerd) => {
     const elem = textNodes.find(n => n.id === nerd.id).elem
-    elem.textContent = nerd.text
+    elem.appendChild(document.createTextNode(nerd.text))
+    elem.removeChild(elem.childNodes[0])
   })
 }
+
+
+const textNodes = searchChildNodesForText(document.querySelector('body'))
 
 const req = new XMLHttpRequest()
 req.addEventListener('load', handleResponse)
