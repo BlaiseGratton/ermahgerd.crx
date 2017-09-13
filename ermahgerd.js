@@ -12,10 +12,11 @@ const createRegisterer = () => {
 
 const registerNode = createRegisterer()
 
-
 const searchChildNodesForText = (elem, textNodes=[]) => {
   for (let node of elem.children) {
-    if (node.textContent) {
+    if (node.textContent
+        && node.tagName !== 'SCRIPT'
+        && node.tagName !== 'STYLE') {
       textNodes.push(registerNode(node))
     }
     searchChildNodesForText(node, textNodes)
